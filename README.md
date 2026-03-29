@@ -1,16 +1,97 @@
-task-1:
-Am interschimbat(cu ajutorul unui temp) primul element cu ultimul element de pe fiecare linie a matricei pana la jumatatea liniei
-task-2:
-Am alocat dinamic o matrice de dimensiune MxN si am facut astfel incat primul element de pe matrice sa ia valoarea ultimului element de pe prima linie, al doilea element sa ia valoarea ultimului element de pe a doua linie s.a.m.d.
-task-3:
-Am alocat dinamic o matrice de dimensiune hxw ,apoi am lipit subimaginea care are primul element al sau elemtul imaginii de coordonate (x,y) pe matricea alocata
-task-4:
-Am alocat o matrice de dim (N+(2rows))x(M+(2cols)) si i am dat fiecarui element din matrice culorile paramtrilor dati in functie iar apoi incepand cu elementul de coordonate (rows,cols) am setat matricea sa ia valorile imaginii originale
-task-5:
-Ok...M-am folosit de operatorul ternar pentru ca loop urile mele sa se opreasca in cazul in care imaginea sursa e mai mare decat suprafata comuna a imaginilor ,iar in loop am setat pixelii din imaginea destinatie sa ia valoare imaginii sursa.
-task-6:
-Ok...Am alocat cu calloc o matice de dimensiune (N+filter_size-1)x(M+fillter_size-1) astfel incat cand filtrez un pixel care e pe margine, veciinii sai sa fie 0 si sa pot filtra conform cerintei ,dupa care am atribuit valoare elementelor de pe pozitia (filter_size-1)/2 (filter_size-1)/2 valoarea imaginii pana la elementul de pe pozitia N+(filter_size-1)/2-1 ,respectiv M+(filter_size-1)/2-1.
-TLDR: Am creat un fel de rama pentru imagine, elementele de pe rama avand valoare (0,0,0) ca sa pot filtra marginile
-Apoi am atribuit fiecarui element de culoare al imaginii initiale suma submatricei de dimensiune filter_size x filter_size primul element avand acelasi indice cu primul element din matricea alocata ca sa iasa suma elementelor vecine primului element din imagine ,in acest caz, care se aplica si la restul pixelilor din imagine.
-task-7:
-M-am folosit de un while(1) pentru un loop infinit in care am citit comanda ,iar prin intermediul unui pointer p care a primit niste valori specifice acolo unde se putea, am codificat comenzile in cod ,iar apoi prin intermediul unui switch(*p) am realizat cazuri pentru fiecare comanda unde am citit in fiecare caz parametrii dati de comanda
+Descriere generală
+
+În această temă am implementat un procesor de imagini în limbajul C, lucrând direct cu matrice de pixeli RGB și alocare dinamică de memorie. Programul permite aplicarea unor operații de bază pe imagini (flip, rotate, crop, extend, paste) și aplicarea de filtre folosind convoluții, precum și un mod interactiv de lucru prin comenzi.
+
+Am lucrat la nivel low-level, manipulând manual memoria și valorile pixelilor, fără a folosi biblioteci externe pentru procesarea imaginilor.
+
+Task 1 - Flip Horizontal
+
+Pentru acest task am realizat oglindirea pe orizontală a imaginii.
+
+Am parcurs fiecare linie a matricei și am interschimbat:
+
+primul element cu ultimul,
+al doilea cu penultimul,
+și așa mai departe până la jumătatea liniei, folosind o variabilă temporară (temp).
+Task 2 - Rotate Left
+
+Pentru rotația la stânga cu 90 de grade:
+
+am alocat dinamic o matrice de dimensiune M x N;
+am mapat elementele astfel încât:
+primul element din matricea nouă să fie ultimul element de pe prima linie din matricea inițială,
+al doilea element să fie ultimul element de pe a doua linie etc.
+
+Astfel am realizat rotația completă a imaginii.
+
+Task 3 - Crop
+
+Pentru operația de crop:
+
+am alocat dinamic o matrice de dimensiune h x w;
+am copiat submatricea din imaginea originală care începe la coordonatele (x, y).
+
+Practic, am extras o subimagine din imaginea inițială.
+
+Task 4 - Extend
+
+Pentru extinderea imaginii:
+
+am alocat o matrice de dimensiune (N + 2 * rows) x (M + 2 * cols);
+am inițializat toți pixelii noi cu culoarea (new_R, new_G, new_B);
+apoi am copiat imaginea originală în noua matrice, începând de la poziția (rows, cols).
+
+Rezultatul este o imagine „încadrată” de un chenar de culoare constantă.
+
+Task 5 - Copy Paste
+
+Pentru operația de paste:
+
+am copiat pixelii din imaginea sursă în imaginea destinație, începând de la coordonatele (x, y);
+am avut grijă ca operația să nu depășească limitele imaginii destinație;
+pentru acest lucru am folosit condiții în bucle (inclusiv operatorul ternar) astfel încât copierea să se oprească atunci când se ajunge la margini.
+
+Imaginea sursă nu este modificată.
+
+Task 6 - Apply Filter
+
+Pentru aplicarea filtrului:
+
+am alocat o matrice mai mare cu calloc, de dimensiune
+(N + filter_size - 1) x (M + filter_size - 1);
+aceasta funcționează ca o „ramă” în jurul imaginii, unde pixelii din afara imaginii au valoarea (0, 0, 0);
+
+Astfel:
+
+am putut aplica filtrul și pe margini fără cazuri speciale;
+pentru fiecare pixel am calculat suma ponderată a vecinilor pe baza filtrului (convoluție);
+rezultatul a fost limitat în intervalul [0, 255].
+
+Pe scurt: am creat padding cu zero și am aplicat filtrul ca o submatrice glisantă peste imagine.
+
+Task 7 - Interactive Image Processor
+
+Pentru acest task am implementat un sistem interactiv de procesare a imaginilor:
+
+am folosit un while(1) pentru a citi comenzi continuu;
+am interpretat comenzile folosind un pointer și un switch;
+pentru fiecare comandă:
+am citit parametrii necesari;
+am aplicat operația corespunzătoare asupra imaginii;
+
+Am implementat suport pentru:
+
+load / save imagini BMP
+aplicare operații (flip, rotate, crop, extend, paste)
+creare și aplicare filtre
+ștergere imagini și filtre
+
+De asemenea:
+
+am gestionat indexarea imaginilor și filtrelor;
+am avut grijă la alocarea și dezalocarea corectă a memoriei (fără memory leaks).
+Observații de implementare
+Am folosit alocare dinamică pentru toate imaginile și filtrele.
+Am lucrat direct cu matrice tridimensionale (NxMx3) pentru pixeli RGB.
+Am acordat atenție gestionării memoriei și dezalocării corecte.
+Pentru filtrare am folosit o abordare cu padding pentru a trata corect marginile.
