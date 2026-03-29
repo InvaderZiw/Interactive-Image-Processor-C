@@ -1,0 +1,12 @@
+images/
+tests-out/
+tests/
+check.sh
+check16
+check16.c
+check16.c.bak
+install-linters.sh
+interactive
+Makefile.checker
+parse.awk
+result
